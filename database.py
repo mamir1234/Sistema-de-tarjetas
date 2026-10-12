@@ -1,7 +1,16 @@
+import os
+import shutil
 import sqlite3
 from pathlib import Path
 
 DATABASE = Path(__file__).parent / "base_de_datos.db"
+
+# En Vercel solo se puede escribir en /tmp: se copia la base ahí la primera vez.
+if os.environ.get("VERCEL"):
+    tmp_db = Path("/tmp/base_de_datos.db")
+    if not tmp_db.exists() and DATABASE.exists():
+        shutil.copy(DATABASE, tmp_db)
+    DATABASE = tmp_db
 
 
 def get_connection():
