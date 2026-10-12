@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Tarjetas</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div>
+            <span class="eyebrow">SISTEMA DE GESTIÓN</span>
+            <h1>Control de Tarjetas</h1>
+            <p>Clientes, cuentas, tarjetas y transacciones en un solo lugar.</p>
+        </div>
+        <div class="status-pill"><span></span> API conectada</div>
+    </header>
+
+    <main class="container">
+        <div id="mensaje" class="message hidden"></div>
+
+        <section class="dashboard">
+            <div class="stat-card">
+                <span>Clientes</span>
+                <strong id="totalClientes">0</strong>
+            </div>
+            <div class="stat-card">
+                <span>Cuentas</span>
+                <strong id="totalCuentas">0</strong>
+            </div>
+            <div class="stat-card">
+                <span>Tarjetas</span>
+                <strong id="totalTarjetas">0</strong>
+            </div>
+            <div class="stat-card">
+                <span>Transacciones</span>
+                <strong id="totalTransacciones">0</strong>
+            </div>
+        </section>
+
+        <nav class="tabs">
+            <button class="tab active" data-section="clientes">Clientes</button>
+            <button class="tab" data-section="cuentas">Cuentas</button>
+            <button class="tab" data-section="tarjetas">Tarjetas</button>
+            <button class="tab" data-section="transacciones">Transacciones</button>
+        </nav>
+
+        <section id="clientes" class="panel section active">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">GESTIÓN</span>
+                    <h2>Clientes</h2>
+                </div>
+                <button class="secondary-btn" onclick="cargarTodo()">Actualizar</button>
+            </div>
+
+            <form id="formCliente" class="form-grid">
+                <input type="text" id="clienteCedula" placeholder="Cédula" required>
+                <input type="text" id="clienteNombre" placeholder="Nombre" required>
+                <input type="text" id="clienteApellidos" placeholder="Apellidos" required>
+                <input type="email" id="clienteCorreo" placeholder="Correo" required>
+                <input type="text" id="clienteTelefono" placeholder="Teléfono" required>
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">Guardar cliente</button>
+                    <button type="button" class="secondary-btn" onclick="limpiarFormulario('cliente')">Limpiar</button>
+                </div>
+            </form>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Cédula</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="tablaClientes"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="cuentas" class="panel section">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">GESTIÓN</span>
+                    <h2>Cuentas</h2>
+                </div>
+            </div>
+
+            <form id="formCuenta" class="form-grid">
+                <input type="text" id="cuentaNumero" placeholder="Número de cuenta" required>
+                <input type="text" id="cuentaCliente" placeholder="Cédula del cliente" required>
+                <select id="cuentaTipo" required>
+                    <option value="">Tipo de cuenta</option>
+                    <option value="Ahorros">Ahorros</option>
+                    <option value="Corriente">Corriente</option>
+                </select>
+                <input type="number" id="cuentaSaldo" placeholder="Saldo" min="0" step="0.01" required>
+                <select id="cuentaEstado" required>
+                    <option value="Activa">Activa</option>
+                    <option value="Inactiva">Inactiva</option>
+                </select>
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">Guardar cuenta</button>
+                    <button type="button" class="secondary-btn" onclick="limpiarFormulario('cuenta')">Limpiar</button>
+                </div>
+            </form>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Número</th><th>Cliente</th><th>Tipo</th><th>Saldo</th><th>Estado</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="tablaCuentas"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="tarjetas" class="panel section">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">GESTIÓN</span>
+                    <h2>Tarjetas</h2>
+                </div>
+            </div>
+
+            <form id="formTarjeta" class="form-grid">
+                <input type="text" id="tarjetaNumero" placeholder="Número de tarjeta" required>
+                <input type="text" id="tarjetaCuenta" placeholder="Número de cuenta" required>
+                <select id="tarjetaTipo" required>
+                    <option value="">Tipo</option>
+                    <option value="Débito">Débito</option>
+                    <option value="Crédito">Crédito</option>
+                </select>
+                <select id="tarjetaMarca" required>
+                    <option value="">Marca</option>
+                    <option value="Visa">Visa</option>
+                    <option value="Mastercard">Mastercard</option>
+                    <option value="American Express">American Express</option>
+                </select>
+                <input type="date" id="tarjetaVencimiento" required>
+                <input type="number" id="tarjetaLimite" placeholder="Límite de crédito" min="0" step="0.01" required>
+                <select id="tarjetaEstado" required>
+                    <option value="Activa">Activa</option>
+                    <option value="Bloqueada">Bloqueada</option>
+                    <option value="Vencida">Vencida</option>
+                </select>
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">Guardar tarjeta</button>
+                    <button type="button" class="secondary-btn" onclick="limpiarFormulario('tarjeta')">Limpiar</button>
+                </div>
+            </form>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Tarjeta</th><th>Cuenta</th><th>Tipo</th><th>Marca</th><th>Vencimiento</th><th>Estado</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="tablaTarjetas"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="transacciones" class="panel section">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">MOVIMIENTOS</span>
+                    <h2>Transacciones</h2>
+                </div>
+            </div>
+
+            <form id="formTransaccion" class="form-grid">
+                <input type="text" id="transaccionId" placeholder="ID de transacción" required>
+                <input type="text" id="transaccionTarjeta" placeholder="Número de tarjeta" required>
+                <select id="transaccionTipo" required>
+                    <option value="">Tipo</option>
+                    <option value="Compra">Compra</option>
+                    <option value="Retiro">Retiro</option>
+                    <option value="Pago">Pago</option>
+                    <option value="Depósito">Depósito</option>
+                </select>
+                <input type="number" id="transaccionMonto" placeholder="Monto" min="0.01" step="0.01" required>
+                <input type="date" id="transaccionFecha" required>
+                <input type="text" id="transaccionComercio" placeholder="Comercio" required>
+                <input type="text" id="transaccionDescripcion" placeholder="Descripción">
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">Guardar transacción</button>
+                    <button type="button" class="secondary-btn" onclick="limpiarFormulario('transaccion')">Limpiar</button>
+                </div>
+            </form>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Tarjeta</th><th>Tipo</th><th>Monto</th><th>Fecha</th><th>Comercio</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="tablaTransacciones"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="security-note">
+            <strong>Importante:</strong> este sistema es un proyecto académico. No ingreses números reales de tarjetas, CVV, PIN ni información bancaria real.
+        </div>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
