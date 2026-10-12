@@ -1,2 +1,2 @@
-﻿fastapi
-uvicorngit
+fastapi
+uvicorn
